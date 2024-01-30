@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+    .container {
+        max-width: 400px;
+        margin: 20px auto;
+        text-align: center;
+    }
+    input[type="text"] {
+        padding: 8px;
+        margin-right: 10px;
+    }
+    button {
+        padding: 8px 16px;
+        cursor: pointer;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Quản lý cầu thủ</h1>
+    <input type="text" id="playerName" placeholder="Nhập tên cầu thủ">
+    <button onclick="addPlayer()">Thêm cầu thủ</button>
+    <ul id="playerList"></ul>
+</div>
+
+<script>
+function addPlayer() {
+    var playerNameInput = document.getElementById("playerName");
+    var playerName = playerNameInput.value.trim();
+
+    if (playerName === "") {
+        alert("Vui lòng nhập tên cầu thủ!");
+        return;
+    }
+
+    var playerId = Date.now();
+
+    localStorage.setItem(playerId, playerName);
+
+    playerNameInput.value = "";
+
+    var playerList = document.getElementById("playerList");
+    var listItem = document.createElement("li");
+    listItem.textContent = playerName;
+    playerList.appendChild(listItem);
+}
+
+    Load= function() {
+    var playerList = document.getElementById("playerList");
+
+    for (var i = 0; i < localStorage.length; i++) {
+        var playerId = localStorage.key(i);
+        var playerName = localStorage.getItem(playerId);
+
+        var listItem = document.createElement("li");
+        listItem.textContent = playerName;
+        playerList.appendChild(listItem);
+    }
+};
+</script>
+</body>
+</html>
+

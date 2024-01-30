@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    let name = prompt("Nhap vao ten");
+    let age = prompt("Nhap vao tuoi");
+    let email = prompt("Nhap vao email");
+    let arr = [];
+    arr.push(name);
+    arr.push(age);
+    arr.push(email);
+    localStorage.setItem("name",JSON.stringify(arr));
+    document.write(arr);
+
+</script>
+</body>
+</html>

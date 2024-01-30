@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      #addTaskForm {
+        display: flex;
+        margin-bottom: 20px;
+      }
+
+      #newTaskInput {
+        flex-grow: 1;
+        padding: 8px;
+        font-size: 16px;
+      }
+
+      #newTaskInput:focus {
+        outline: none;
+        box-shadow: 0 0 2px 1px #ccc;
+      }
+
+      button {
+        background-color: #b0bbb0;
+        color: white;
+        padding: 8px 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f2f2f2;
+        margin-bottom: 5px;
+        border-radius: 5px;
+      }
+
+      .completed {
+        text-decoration: line-through;
+      }
+
+      .delete-button {
+        background-color: #f44336;
+        color: white;
+        padding: 5px 10px;
+        font-size: 14px;
+        border: none;
+        border-radius: 50%;
+        margin-left: auto;
+        cursor: pointer;
+      }
+
+      .delete-button:hover {
+        background-color: #da190b;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My To-Do List</h1>
+    <form id="addTaskForm">
+      <input type="text" id="newTaskInput" placeholder="Add a new task..." />
+      <button type="submit">Add</button>
+    </form>
+    <ul id="taskList"></ul>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const addTaskForm = document.getElementById("addTaskForm");
+        const newTaskInput = document.getElementById("newTaskInput");
+        const taskList = document.getElementById("taskList");
+
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        function saveTasks() {
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+
+        tasks.forEach((task) => {
+          const li = document.createElement("li");
+          li.classList.add("task-item");
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = task.completed;
+          checkbox.addEventListener("change", () => {
+            task.completed = checkbox.checked;
+            saveTasks();
+          });
+
+          li.appendChild(checkbox);
+
+          const span = document.createElement("span");
+          span.textContent = task.text;
+          span.classList.add("task-text");
+          if (task.completed) {
+            span.classList.add("completed");
+          }
+          li.appendChild(span);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.classList.add("delete-button");
+          deleteButton.textContent = "X";
+          deleteButton.addEventListener("click", () => {
+            tasks = tasks.filter((t) => t !== task);
+            saveTasks();
+            li.remove();
+          });
+          li.appendChild(deleteButton);
+          taskList.appendChild(li);
+        });
+
+        addTaskForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          if (!newTaskInput.value.trim()) return;
+
+          const task = {
+            text: newTaskInput.value.trim(),
+            completed: false,
+          };
+
+          tasks.push(task);
+          saveTasks();
+
+          const li = document.createElement("li");
+          li.classList.add("task-item");
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = task.completed;
+          checkbox.addEventListener("change", () => {
+            task.completed = checkbox.checked;
+            saveTasks();
+          });
+
+          li.appendChild(checkbox);
+
+          const span = document.createElement("span");
+          span.textContent = task.text;
+          span.classList.add("task-text");
+          if (task.completed) {
+            span.classList.add("completed");
+          }
+          li.appendChild(span);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.classList.add("delete-button");
+          deleteButton.textContent = "X";
+          deleteButton.addEventListener("click", () => {
+            tasks = tasks.filter((t) => t !== task);
+            saveTasks();
+            li.remove();
+          });
+          li.appendChild(deleteButton);
+
+          taskList.appendChild(li);
+
+          newTaskInput.value = "";
+        });
+      });
+    </script>
+  </body>
+</html>

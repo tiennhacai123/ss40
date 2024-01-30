@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        max-width: 400px;
+        margin: 20px auto;
+        text-align: center;
+      }
+      input[type="text"] {
+        padding: 8px;
+        margin-right: 10px;
+      }
+      button {
+        padding: 8px 16px;
+        cursor: pointer;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Xóa cầu thủ</h1>
+      <input type="text" id="playerId" placeholder="Nhập ID cầu thủ" />
+      <button onclick="deletePlayer()">Xóa cầu thủ</button>
+      <ul id="playerList"></ul>
+    </div>
+
+    <script>
+      function deletePlayer() {
+        var playerIdInput = document.getElementById("playerId");
+        var playerId = playerIdInput.value.trim();
+
+        if (playerId === "") {
+          alert("Vui lòng nhập ID cầu thủ!");
+          return;
+        }
+
+        if (!localStorage.getItem(playerId)) {
+          alert("Không tìm thấy cầu thủ có ID " + playerId);
+          return;
+        }
+
+        localStorage.removeItem(playerId);
+
+        playerIdInput.value = "";
+
+        var playerListItem = document.getElementById("player" + playerId);
+        if (playerListItem) {
+          playerListItem.parentNode.removeChild(playerListItem);
+        } else {
+          alert("Cầu thủ có ID " + playerId + " không tồn tại trên danh sách.");
+        }
+      }
+
+      Load = function () {
+        var playerList = document.getElementById("playerList");
+
+
+        for (var i = 0; i < localStorage.length; i++) {
+          var playerId = localStorage.key(i);
+          var playerName = localStorage.getItem(playerId);
+
+          var listItem = document.createElement("li");
+          listItem.textContent = playerName;
+          listItem.id = "player" + playerId;
+          playerList.appendChild(listItem);
+        }
+      };
+    </script>
+  </body>
+</html>
